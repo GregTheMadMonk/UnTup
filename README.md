@@ -54,7 +54,9 @@ Reference types when copying with `untup::untup()`!
 At least C++20.
 
 ### Known issues
-Doesn't build as a module on GCC.
+* Doesn't build as a module on GCC.
+* Headers in module global fragment could cause errors. Read how to fix that
+  below.
 
 ### Adding to your project
 
@@ -67,6 +69,14 @@ target_link_libraries( YourTarget UnTup ) # Or UnTup::UnTup
 ```
 to your `CMakeLists.txt`.
 Use with `#include <untup.hh>` or `import untup;`.
+
+#### Headers in global module fragment break the build!
+Yeah I know. This is why you can specify `UT_STD_MODULE` and
+`UT_STD_MODULE_TARGET` to provide a name of your module that provides a standard
+library to your project. If you're using modules, you probably have it anyway.
+**UnTup** will `import UT_STD_MODULE;` instead of including STL headers and
+CMake will link **UnTup** to `UT_STD_MODULE_TARGET`!
+If `UT_STD_MODULE_TARGET` is unset, `UT_STD_MODULE` value is used for it.
 
 #### Alternatively
 

@@ -30,6 +30,19 @@ else()
         TYPE CXX_MODULES
         FILES untup.xx
     )
+
+    if( DEFINED UT_STD_MODULE )
+        if( NOT DEFINED UT_STD_MODULE_TARGET )
+            set( UT_STD_MODULE_TARGET "${UT_STD_MODULE}" )
+        endif()
+
+        target_compile_definitions(
+            ${PROJECT_NAME} PRIVATE
+            UT_STD_MODULE=${UT_STD_MODULE}
+        )
+        message( STATUS "UT_STD_MODULE_TARGET ${UT_STD_MODULE_TARGET}" )
+        target_link_libraries( ${PROJECT_NAME} PRIVATE ${UT_STD_MODULE_TARGET} )
+    endif()
 endif()
 add_library(
     ${PROJECT_NAME}::${PROJECT_NAME}

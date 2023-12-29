@@ -20,25 +20,6 @@
 
 namespace untup {
 
-/// @brief operator+ overload for folding
-namespace tuple_sum {
-
-template <typename... Ts1, typename... Ts2>
-inline constexpr
-auto operator+(const std::tuple<Ts1...>& t1, const std::tuple<Ts2...>& t2) {
-    return std::apply(
-        [&t2] (Ts1... els1) {
-            return std::apply(
-                [&els1...] (Ts2... els2) -> std::tuple<Ts1..., Ts2...> {
-                    return { els1..., els2... };
-                }, t2
-            );
-        }, t1
-    );
-}
-
-} // <-- namespace tuple_sum
-
 // Taken (with modifications) from
 // https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2021/p2165r2.pdf
 namespace p2165r2 {
@@ -110,8 +91,7 @@ auto untie(RefTo<Tup<Elements...>> tup) {
     PRINT_TYPE(__LINE__, std::tuple<Elements...>);
     return std::apply(
         [] (Elements&... elements) {
-            using namespace tuple_sum;
-            return (... + untie(RefTo<Elements>(elements)));
+            return std::tuple_cat(untie(RefTo<Elements>(elements))...);
         }, tup.ref.get()
     );
 }
@@ -123,8 +103,9 @@ auto untie(RefTo<const Tup<Elements...>> tup) {
     PRINT_TYPE(__LINE__, const std::tuple<Elements...>);
     return std::apply(
         [] (const Elements&... elements) {
-            using namespace tuple_sum;
-            return (... + untie(RefTo<AddConst_T<Elements>>(elements)));
+            return std::tuple_cat(
+                untie(RefTo<AddConst_T<Elements>>(elements))...
+            );
         }, tup.ref.get()
     );
 }
@@ -184,13 +165,6 @@ auto flatten = std::views::transform(
 #ifndef UT_NO_TESTING
 /// @brief Compile-time test
 namespace test {
-
-using namespace tuple_sum;
-
-constexpr std::tuple t1{ 10, 20 };
-constexpr std::tuple t2{ 'c', 'd' };
-
-static_assert(t1 + t2 == std::tuple{ 10, 20, 'c', 'd' });
 
 consteval int testMethod() {
     auto test1 = std::tuple{ 1, std::tuple{ 2, 3 } };

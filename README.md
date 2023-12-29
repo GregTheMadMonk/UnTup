@@ -40,7 +40,6 @@ for (
 for (
     auto [ idx, pair ] : std::views::zip(v1, v2)
                          | std::views::enumerate
-                         | untup::views::flatten
 ) {
     auto [ e1, e2 ] = pair; // Eww, why?
     println("{}: {} and {}", idx, e1, e2);

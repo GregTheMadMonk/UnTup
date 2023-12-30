@@ -1,3 +1,5 @@
+#pragma once
+
 #if __cplusplus < 202002L
 #error "At least C++20 is required to use untup!"
 #endif

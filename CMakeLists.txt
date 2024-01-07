@@ -31,17 +31,18 @@ else()
         FILES untup.xx
     )
 
-    if( DEFINED UT_STD_MODULE )
-        if( NOT DEFINED UT_STD_MODULE_TARGET )
-            set( UT_STD_MODULE_TARGET "${UT_STD_MODULE}" )
+    if( DEFINED CXX_STD_MODULE )
+        if( DEFINED CXX_STD_MODULE_TARGET )
+            target_link_libraries(
+                ${PROJECT_NAME} PRIVATE
+                ${CXX_STD_MODULE_TARGET}
+            )
         endif()
 
         target_compile_definitions(
             ${PROJECT_NAME} PRIVATE
-            UT_STD_MODULE=${UT_STD_MODULE}
+            CXX_STD_MODULE=${CXX_STD_MODULE}
         )
-        message( STATUS "UT_STD_MODULE_TARGET ${UT_STD_MODULE_TARGET}" )
-        target_link_libraries( ${PROJECT_NAME} PRIVATE ${UT_STD_MODULE_TARGET} )
     endif()
 endif()
 add_library(

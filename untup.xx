@@ -1,4 +1,4 @@
-#ifndef UT_STD_MODULE
+#ifndef CXX_STD_MODULE
 module;
 
 #include <concepts>
@@ -12,8 +12,8 @@ module;
 
 export module untup;
 
-#ifdef UT_STD_MODULE
-import UT_STD_MODULE;
+#ifdef CXX_STD_MODULE
+import CXX_STD_MODULE;
 #endif
 
 #define UT_EXPORT export

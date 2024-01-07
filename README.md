@@ -70,12 +70,11 @@ to your `CMakeLists.txt`.
 Use with `#include <untup.hh>` or `import untup;`.
 
 #### Headers in global module fragment break the build!
-Yeah I know. This is why you can specify `UT_STD_MODULE` and
-`UT_STD_MODULE_TARGET` to provide a name of your module that provides a standard
+Yeah I know. This is why you can specify `CXX_STD_MODULE` and
+`CXX_STD_MODULE_TARGET` to provide a name of your module that provides a standard
 library to your project. If you're using modules, you probably have it anyway.
-**UnTup** will `import UT_STD_MODULE;` instead of including STL headers and
-CMake will link **UnTup** to `UT_STD_MODULE_TARGET`!
-If `UT_STD_MODULE_TARGET` is unset, `UT_STD_MODULE` value is used for it.
+**UnTup** will `import CXX_STD_MODULE;` instead of including STL headers and
+If `CXX_STD_MODULE_TARGET` is set, CMake will link **UnTup** to it making sure the target under this name is built before it.
 
 #### Alternatively
 
